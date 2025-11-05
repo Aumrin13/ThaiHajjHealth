@@ -105,7 +105,8 @@ pm2 restart thai-hajj-health
 - ✅ HTTPS redirect
 - ✅ X-Content-Type-Options
 - ✅ X-Frame-Options
-- ✅ X-XSS-Protection
+- ✅ Referrer-Policy
+- ✅ CSP-ready (Content Security Policy)
 - ✅ Protected sensitive files (.env, package.json, etc.)
 
 ## 🐛 การแก้ไขปัญหา (Troubleshooting)

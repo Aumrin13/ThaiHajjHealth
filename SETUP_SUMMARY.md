@@ -50,7 +50,7 @@ package.json        - เพิ่ม npm scripts: deploy และ deploy:full
 ### ✅ Process Management
 - PM2 configuration สำหรับ auto-restart
 - Log management และ monitoring
-- Cluster mode support
+- Fork mode for single instance (scalable to cluster mode)
 
 ### ✅ Web Server Configuration
 - Apache proxy configuration (.htaccess)
@@ -124,8 +124,8 @@ chmod +x plesk-deploy.sh
 - ✅ HTTPS redirect (HTTP → HTTPS)
 - ✅ X-Content-Type-Options: nosniff
 - ✅ X-Frame-Options: SAMEORIGIN
-- ✅ X-XSS-Protection enabled
 - ✅ Referrer-Policy configured
+- ✅ CSP-ready (Content Security Policy ready for configuration)
 - ✅ Protected sensitive files (.env, package.json, etc.)
 - ✅ Directory browsing disabled
 
