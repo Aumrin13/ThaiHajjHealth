@@ -8,7 +8,7 @@ export const HealthCertificate = () => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-gray-800 dark:text-white/90">
-            📜 ใบรับรอง Pilgrims' Health Status
+            📜 ใบรับรอง Pilgrims&apos; Health Status
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             Certificate of Health Status

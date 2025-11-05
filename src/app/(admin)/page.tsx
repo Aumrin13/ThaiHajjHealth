@@ -15,8 +15,6 @@ import {
   CheckCircleIcon,
   AlertIcon,
   FileIcon,
-  DownloadIcon,
-  ArrowRightIcon,
 } from "@/icons/index";
 
 export const metadata: Metadata = {

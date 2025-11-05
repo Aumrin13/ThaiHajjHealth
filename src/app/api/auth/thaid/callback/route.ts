@@ -49,7 +49,7 @@ function validateCitizenId(citizenId: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, state, redirect_uri } = await request.json();
+    const { code, redirect_uri } = await request.json();
 
     if (!code) {
       return NextResponse.json({
