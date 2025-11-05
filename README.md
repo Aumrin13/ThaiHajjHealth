@@ -156,6 +156,22 @@ API Docs: http://localhost:3001/docs
 
 ### Production Deployment
 
+#### Plesk Hosting (Recommended)
+```bash
+# เริ่มต้นใช้งานง่ายๆ ใน 3 ขั้นตอน
+# See PLESK_QUICKSTART.md for details
+
+# 1. Setup Git Repository in Plesk Panel
+# 2. Configure Node.js and Environment Variables
+# 3. Deploy via SSH:
+chmod +x plesk-deploy.sh
+./plesk-deploy.sh
+```
+
+📖 **Plesk Deployment Guides:**
+- 🚀 [PLESK_QUICKSTART.md](./PLESK_QUICKSTART.md) - เริ่มต้นใช้งานด่วน (Quick Start)
+- 📚 [DEPLOYMENT.md](./DEPLOYMENT.md) - คู่มือแบบละเอียด (Complete Guide)
+
 #### Frontend (Vercel/Netlify)
 ```bash
 npm run build
