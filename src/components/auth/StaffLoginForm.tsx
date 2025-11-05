@@ -16,7 +16,6 @@ export default function StaffLoginForm() {
   const { login, isLoading, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [hospitalCodes, setHospitalCodes] = useState<HospitalCode[]>([]);
-  const [isLoadingHospitals, setIsLoadingHospitals] = useState(false);
   const [formData, setFormData] = useState<StaffLoginCredentials>({
     username: '',
     password: '',
@@ -31,7 +30,6 @@ export default function StaffLoginForm() {
   }, []);
 
   const loadHospitalCodes = async () => {
-    setIsLoadingHospitals(true);
     try {
       const result = await authService.getHospitalCodes();
       if (Array.isArray(result)) {
@@ -39,8 +37,6 @@ export default function StaffLoginForm() {
       }
     } catch (error) {
       console.error('Failed to load hospital codes:', error);
-    } finally {
-      setIsLoadingHospitals(false);
     }
   };
 
