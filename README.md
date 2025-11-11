@@ -2,7 +2,7 @@
 
 ระบบจัดการสุขภาพแบบครบถ้วนสำหรับผู้เดินทางไปประกอบพิธีฮัจญ์ โดยออกแบบให้ครอบคลุม 3 ระยะ: ก่อนเดินทาง ระหว่างการเดินทาง และหลังเดินทาง พร้อมระบบเฝ้าระวัง 14 วัน และแนวคิด **One ID - One Health Record** 
 
-สร้างด้วย **Next.js 15** และ **Tailwind CSS V4**
+สร้างด้วย **Next.js 15** และ **Tailwind CSS V4**https://github.com/Aumrin13/ThaiHajjHealth/blob/main/README.md
 
 ## 📋 สารบัญ
 - [ภาพรวมระบบ](#ภาพรวมระบบ)
@@ -462,5 +462,6 @@ This project is private and maintained by Thai Hajj Health Team.
 **Version:** 1.0.0  
 **Last Updated:** November 2025  
 **Maintained by:** Thai Hajj Health Development Team
-#   T h a i H a j j H e a l t h  
+#   T h a i H a j j H e a l t h 
+ 
  
