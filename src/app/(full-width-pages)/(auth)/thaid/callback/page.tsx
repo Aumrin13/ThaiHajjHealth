@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 // import { useAuth } from '@/context/AuthContext';
 
 type CallbackStatus = 'processing' | 'success' | 'error';
 
-export default function ThaiDCallbackPage() {
+// Component ที่ใช้ useSearchParams จริง
+function ThaiDCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   // Note: loginWithThaiD function will be implemented in AuthContext
@@ -112,7 +113,12 @@ export default function ThaiDCallbackPage() {
   }, [searchParams, router]);
 
   const LoadingIcon = () => (
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+    <div className="text-blue-500 mb-4 animate-spin">
+      <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
   );
 
   const SuccessIcon = () => (
@@ -193,5 +199,34 @@ export default function ThaiDCallbackPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function CallbackLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+        <div className="text-blue-500 mb-4 animate-spin">
+          <svg className="w-12 h-12 mx-auto" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">กำลังเตรียมการเข้าสู่ระบบ...</p>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+          รอสักครู่
+        </h2>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense
+export default function ThaiDCallbackPage() {
+  return (
+    <Suspense fallback={<CallbackLoading />}>
+      <ThaiDCallbackContent />
+    </Suspense>
   );
 }

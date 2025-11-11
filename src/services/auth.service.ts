@@ -20,6 +20,11 @@ class AuthService {
     return AuthService.instance;
   }
 
+  // Type guard to check if result is an error
+  private isApiError(result: unknown): result is ApiError {
+    return typeof result === 'object' && result !== null && 'success' in result && (result as ApiError).success === false;
+  }
+
   private async makeRequest<T>(
     endpoint: string, 
     options: RequestInit = {}
@@ -93,9 +98,9 @@ class AuthService {
       body: JSON.stringify(credentials),
     });
 
-    if ('success' in result && result.success) {
+    if (!this.isApiError(result)) {
       // Store token on successful login
-      this.setStoredToken(result.data.token);
+      this.setStoredToken((result as LoginResponse).data.token);
     }
 
     return result;
@@ -185,9 +190,10 @@ class AuthService {
       body: JSON.stringify({ refreshToken: currentToken.refreshToken }),
     });
 
-    if ('success' in result && result.success) {
-      this.setStoredToken(result.data);
-      return result.data;
+    if (!this.isApiError(result)) {
+      const successResult = result as { data: AuthToken };
+      this.setStoredToken(successResult.data);
+      return successResult.data;
     }
 
     // If refresh fails, remove stored token
@@ -218,8 +224,8 @@ class AuthService {
       }
     );
 
-    if ('success' in result && result.success) {
-      return result.data;
+    if (!this.isApiError(result)) {
+      return (result as { data: HospitalCode[] }).data;
     }
 
     return result as ApiError;

@@ -1,13 +1,12 @@
 import React, { FC } from "react";
 
-interface InputProps {
+interface ControlledInputProps {
   type?: "text" | "number" | "email" | "password" | "date" | "time" | string;
   id?: string;
   name?: string;
   placeholder?: string;
-  value?: string | number; // Controlled component
-  defaultValue?: string | number; // Uncontrolled component
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
   max?: string;
@@ -15,16 +14,15 @@ interface InputProps {
   disabled?: boolean;
   success?: boolean;
   error?: boolean;
-  hint?: string; // Optional hint text
+  hint?: string;
 }
 
-const Input: FC<InputProps> = ({
+const ControlledInput: FC<ControlledInputProps> = ({
   type = "text",
   id,
   name,
   placeholder,
   value,
-  defaultValue,
   onChange,
   className = "",
   min,
@@ -49,30 +47,21 @@ const Input: FC<InputProps> = ({
     inputClasses += ` bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800`;
   }
 
-  // Create input props conditionally
-  const inputProps: React.InputHTMLAttributes<HTMLInputElement> = {
-    type,
-    id,
-    name,
-    placeholder,
-    onChange,
-    min,
-    max,
-    step,
-    disabled,
-    className: inputClasses,
-  };
-
-  // Use either value or defaultValue, not both
-  if (value !== undefined) {
-    inputProps.value = value;
-  } else if (defaultValue !== undefined) {
-    inputProps.defaultValue = defaultValue;
-  }
-
   return (
     <div className="relative">
-      <input {...inputProps} />
+      <input
+        type={type}
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        min={min}
+        max={max}
+        step={step}
+        disabled={disabled}
+        className={inputClasses}
+      />
 
       {/* Optional Hint Text */}
       {hint && (
@@ -92,4 +81,4 @@ const Input: FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default ControlledInput;

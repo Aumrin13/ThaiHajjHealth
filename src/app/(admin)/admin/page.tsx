@@ -1,5 +1,6 @@
 import { AdminGuard } from '@/components/auth/AuthGuard';
 import { UserIcon, GroupIcon, DocsIcon, AlertIcon } from '@/icons';
+import Image from 'next/image';
 
 export default function AdminDashboard() {
   return (
@@ -7,9 +8,11 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
-            <img
+            <Image
               src="/images/logo/thh_logo.png"
               alt="Thai Hajj Health System"
+              width={40}
+              height={40}
               className="h-10"
             />
             <div>

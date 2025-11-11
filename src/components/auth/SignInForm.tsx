@@ -128,8 +128,12 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button 
+                    type="submit"
+                    className="w-full" 
+                    size="sm"
+                  >
+                    เข้าสู่ระบบ
                   </Button>
                 </div>
               </div>

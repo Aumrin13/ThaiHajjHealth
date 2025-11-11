@@ -64,7 +64,7 @@ export function AuthGuard({
 
     // All checks passed
     setIsAuthorized(true);
-  }, [isAuthenticated, user, isLoading, requiredRole, requiredPermissions, router, pathname]);
+  }, [isAuthenticated, user, isLoading, requiredRole, requiredPermissions, router, pathname, hasRole, checkPermission, fallbackPath]);
 
   // Get appropriate redirect path based on user role
   const getRedirectPathForRole = (role: UserRole): string => {

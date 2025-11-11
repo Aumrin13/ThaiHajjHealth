@@ -96,7 +96,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     if (state.token && state.isAuthenticated) {
       const refreshInterval = setInterval(() => {
-        refreshAuth();
+        // Refresh token logic will be handled by the refreshAuth function
+        authService.refreshToken().catch(console.error);
       }, 5 * 60 * 1000); // Check every 5 minutes
 
       return () => clearInterval(refreshInterval);

@@ -10,13 +10,11 @@ import StatisticsChart from "@/components/ecommerce/StatisticsChart";
 import RecentOrders from "@/components/ecommerce/RecentOrders";
 import DemographicCard from "@/components/ecommerce/DemographicCard";
 import {
-  CalenderIcon,
-  PieChartIcon,
   CheckCircleIcon,
   AlertIcon,
   FileIcon,
-  DownloadIcon,
-  ArrowRightIcon,
+  CalenderIcon,
+  PieChartIcon,
 } from "@/icons/index";
 
 export const metadata: Metadata = {

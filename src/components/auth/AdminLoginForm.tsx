@@ -8,6 +8,7 @@ import Label from '@/components/form/Label';
 import Button from '@/components/ui/button/Button';
 import { EyeIcon, EyeCloseIcon } from '@/icons';
 import Link from 'next/link';
+import Image from 'next/image';
 import ThaiDLoginButton from './ThaiDLoginButton';
 import LoginDivider from './LoginDivider';
 
@@ -92,10 +93,13 @@ export default function AdminLoginForm() {
       <div className="flex flex-col justify-center flex-1 w-full max-w-md lg:max-w-lg xl:max-w-xl mx-auto lg:mx-0">
         <div className="mb-4 sm:mb-6 lg:mb-8">
           <div className="text-center mb-4 lg:mb-6">
-            <img
+            <Image
               src="/images/logo/thh_logo.png"
               alt="Thai Hajj Health System"
+              width={80}
+              height={80}
               className="h-16 sm:h-18 lg:h-20 mx-auto mb-3"
+              priority
             />
           </div>
           <h1 className="mb-2 font-semibold text-gray-800 text-lg sm:text-xl lg:text-2xl dark:text-white/90 text-center">
