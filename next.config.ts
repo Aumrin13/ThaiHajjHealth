@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
 
   // Image optimization
   images: {
-    domains: ['thh.samilasoft.com', 'thh_api.samilasoft.com'],
+    domains: ['thh.samilasoft.com', 'thh_api.samilasoft.com', 'api-thaihajjhealth.southhealthcenter.com'],
     formats: ['image/webp', 'image/avif'],
   },
 

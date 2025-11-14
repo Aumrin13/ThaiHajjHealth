@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/providers/AuthProvider';
 import { AdminLoginCredentials } from '@/types/auth';
 import Input from '@/components/form/input/InputField';
 import Label from '@/components/form/Label';

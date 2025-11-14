@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/providers/AuthProvider';
 import { authService } from '@/services/auth.service';
 import { StaffLoginCredentials, HospitalCode } from '@/types/auth';
 import Input from '@/components/form/input/InputField';

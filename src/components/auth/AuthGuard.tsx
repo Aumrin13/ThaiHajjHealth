@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/providers/AuthProvider';
 import { UserRole } from '@/types/auth';
 
 interface AuthGuardProps {

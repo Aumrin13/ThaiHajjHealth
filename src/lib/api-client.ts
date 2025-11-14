@@ -3,7 +3,7 @@
  * Base API URL: https://api-thaihajjhealth.southhealthcenter.com
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-thaihajjhealth.southhealthcenter.com';
+const API_BASE_URL = 'https://api-thaihajjhealth.southhealthcenter.com';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -36,8 +36,8 @@ class ApiClient {
   ): Promise<ApiResponse<T>> {
     const { token, isFormData, ...fetchOptions } = options;
 
-    const headers: HeadersInit = {
-      ...(fetchOptions.headers || {}),
+    const headers: Record<string, string> = {
+      ...(fetchOptions.headers as Record<string, string>),
     };
 
     // Add Content-Type for JSON requests
@@ -64,7 +64,7 @@ class ApiClient {
           success: false,
           error: {
             code: response.status.toString(),
-            message: data.message || data.error || 'An error occurred',
+            message: data.message || data.error || 'เกิดข้อผิดพลาด',
             details: data,
           },
         };
@@ -73,11 +73,23 @@ class ApiClient {
       return data;
     } catch (error) {
       console.error('API Request Error:', error);
+      
+      // แปลง error message เป็นภาษาไทย
+      let errorMessage = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
+      
+      if (error instanceof TypeError) {
+        if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
+          errorMessage = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต';
+        } else if (error.message.includes('NetworkError') || error.message.includes('network')) {
+          errorMessage = 'เกิดข้อผิดพลาดในการเชื่อมต่อเครือข่าย';
+        }
+      }
+      
       return {
         success: false,
         error: {
           code: 'NETWORK_ERROR',
-          message: error instanceof Error ? error.message : 'Network error occurred',
+          message: errorMessage,
         },
       };
     }
