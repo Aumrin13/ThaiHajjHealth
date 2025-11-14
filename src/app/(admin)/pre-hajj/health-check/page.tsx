@@ -193,7 +193,7 @@ export default function HealthCheckPage() {
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                         {check.pilgrimName}
                       </h3>
-                      <Badge variant={check.statusColor} size="sm">
+                      <Badge color={check.statusColor} variant="solid" size="sm">
                         {check.status}
                       </Badge>
                     </div>
