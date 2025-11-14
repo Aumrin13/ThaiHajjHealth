@@ -60,7 +60,7 @@ const FAKE_PILGRIMS = [
     phone: "083-456-7890",
     group: "กลุ่ม C - 2025",
     status: "เริ่มต้น",
-    statusColor: "danger" as const,
+    statusColor: "error" as const,
     completeness: {
       generalInfo: 60,
       training: 20,
