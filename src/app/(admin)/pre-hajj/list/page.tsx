@@ -292,7 +292,7 @@ export default function PilgrimsListPage() {
                     {pilgrim.hajjGroup}
                   </td>
                   <td className="px-4 py-4">
-                    <Badge variant={pilgrim.statusColor} size="sm">
+                    <Badge color={pilgrim.statusColor} variant="solid" size="sm">
                       {pilgrim.status}
                     </Badge>
                   </td>
