@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { authAPI } from '@/lib/auth-api';
 import { storage } from '@/lib/storage';
-import type { User, UserRole } from '@/types/api';
+import type { User, UserRole } from '@/types/auth';
+import { ROLE_PERMISSIONS } from '@/types/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -13,11 +14,12 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   hasRole: (role: UserRole | UserRole[]) => boolean;
+  checkPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.node }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -34,10 +36,20 @@ export function AuthProvider({ children }: { children: React.node }) {
     if (token && savedUser) {
       // Verify token with backend
       const response = await authAPI.getCurrentUser(token);
-      
       if (response.success && response.data) {
-        setUser(response.data);
-        storage.setUser(response.data);
+        const apiUser = response.data as any;
+        const mappedUser: User = {
+          ...apiUser,
+          role: (apiUser.role || '').toLowerCase(),
+          permissions: Array.isArray(apiUser.permissions)
+            ? apiUser.permissions
+            : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole])
+              ? ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole]
+              : [],
+          isActive: apiUser.status ? apiUser.status === 'ACTIVE' : true,
+        };
+        setUser(mappedUser);
+        storage.setUser({ ...mappedUser });
       } else {
         // Token invalid, clear storage
         storage.clearAll();
@@ -61,16 +73,29 @@ export function AuthProvider({ children }: { children: React.node }) {
 
       const { user, accessToken, refreshToken } = response.data;
 
+      // แปลง user จาก API (src/types/api) ให้ตรงกับ type User (src/types/auth)
+      const apiUser = user as any;
+      const mappedUser: User = {
+        ...apiUser,
+        role: (apiUser.role || '').toLowerCase(),
+        permissions: Array.isArray(apiUser.permissions)
+          ? apiUser.permissions
+          : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole])
+            ? ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole]
+            : [],
+        isActive: apiUser.status ? apiUser.status === 'ACTIVE' : true,
+      };
+
       // Save to storage
       storage.setAccessToken(accessToken);
       storage.setRefreshToken(refreshToken);
-      storage.setUser(user);
+      storage.setUser({ ...mappedUser });
 
       // Update state
-      setUser(user);
+      setUser(mappedUser);
 
-      // Redirect based on role
-      redirectByRole(user.role);
+      // Redirect based on role (role เป็นตัวพิมพ์เล็ก)
+      redirectByRole(mappedUser.role);
 
       return { success: true };
     } catch (error) {
@@ -103,13 +128,13 @@ export function AuthProvider({ children }: { children: React.node }) {
 
   function redirectByRole(role: UserRole) {
     switch (role) {
-      case 'ADMIN':
+      case 'admin':
         router.push('/admin');
         break;
-      case 'STAFF':
+      case 'staff':
         router.push('/staff/patient-search');
         break;
-      case 'EXECUTIVE':
+      case 'executive':
         router.push('/executive');
         break;
       default:
@@ -127,6 +152,12 @@ export function AuthProvider({ children }: { children: React.node }) {
     return user.role === role;
   }
 
+
+  function checkPermission(permission: string): boolean {
+    if (!user || !Array.isArray(user.permissions)) return false;
+    return user.permissions.includes(permission);
+  }
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -134,6 +165,7 @@ export function AuthProvider({ children }: { children: React.node }) {
     login,
     logout,
     hasRole,
+    checkPermission,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
