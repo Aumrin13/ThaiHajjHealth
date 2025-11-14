@@ -13,7 +13,7 @@ import ThaiDLoginButton from './ThaiDLoginButton';
 import LoginDivider from './LoginDivider';
 
 export default function AdminLoginForm() {
-  const { login, isLoading, error } = useAuth();
+  const { login, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<AdminLoginCredentials>({
     username: '',
@@ -21,6 +21,7 @@ export default function AdminLoginForm() {
     role: 'admin',
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (field: keyof AdminLoginCredentials, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -50,15 +51,17 @@ export default function AdminLoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    // Clear previous error
+    setError(null);
+
     if (!validateForm()) {
       return;
     }
 
-    const success = await login(formData);
-    if (!success) {
-      // Error is handled by the auth context
-      console.log('Login failed');
+    const result = await login(formData.username, formData.password);
+    if (!result.success) {
+      setError(result.error || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
   };
 
