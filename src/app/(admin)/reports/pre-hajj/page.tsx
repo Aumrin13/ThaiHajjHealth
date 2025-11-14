@@ -3,6 +3,14 @@ import React from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import Badge from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
+import {
+  FileTextIcon,
+  UsersIcon,
+  CheckCircle2Icon,
+  StethoscopeIcon,
+  SyringeIcon,
+  TrendingUpIcon,
+} from "@/components/icons/HealthIcons";
 
 // Fake Statistics Data
 const STATS = {
@@ -62,10 +70,10 @@ export default function PreHajjReportsPage() {
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="outline">
-            📊 ส่งออก Excel
+            <TrendingUpIcon className="inline w-4 h-4 mr-2 align-text-bottom" /> ส่งออก Excel
           </Button>
           <Button size="sm">
-            📄 พิมพ์รายงาน
+            <FileTextIcon className="inline w-4 h-4 mr-2 align-text-bottom" /> พิมพ์รายงาน
           </Button>
         </div>
       </div>
@@ -81,7 +89,7 @@ export default function PreHajjReportsPage() {
               </p>
             </div>
             <div className="p-3 bg-blue-500 rounded-lg text-white text-2xl">
-              👥
+              <UsersIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -98,7 +106,7 @@ export default function PreHajjReportsPage() {
               </p>
             </div>
             <div className="p-3 bg-green-500 rounded-lg text-white text-2xl">
-              ✓
+              <CheckCircle2Icon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -115,7 +123,7 @@ export default function PreHajjReportsPage() {
               </p>
             </div>
             <div className="p-3 bg-purple-500 rounded-lg text-white text-2xl">
-              🏥
+              <StethoscopeIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -132,7 +140,7 @@ export default function PreHajjReportsPage() {
               </p>
             </div>
             <div className="p-3 bg-orange-500 rounded-lg text-white text-2xl">
-              💉
+              <SyringeIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -289,8 +297,8 @@ export default function PreHajjReportsPage() {
 
       {/* Summary */}
       <ComponentCard className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-          📊 สรุปภาพรวม
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+          <TrendingUpIcon className="w-5 h-5" /> สรุปภาพรวม
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">

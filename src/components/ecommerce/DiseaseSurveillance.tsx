@@ -1,14 +1,15 @@
 "use client";
 import React from "react";
 import Badge from "../ui/badge/Badge";
+import { SearchIcon, PhoneIcon } from "../icons/HealthIcons";
 
 export const DiseaseSurveillance = () => {
   return (
     <div className="rounded-2xl border border-red-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-semibold text-gray-800 dark:text-white/90">
-            🔍 เฝ้าระวังโรคติดต่อ
+          <h3 className="font-semibold text-gray-800 dark:text-white/90 flex items-center gap-2">
+            <SearchIcon className="w-5 h-5" /> เฝ้าระวังโรคติดต่อ
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             ติดตามเป็นระยะเวลา 14 วันหลังเดินทางกลับ
@@ -49,8 +50,8 @@ export const DiseaseSurveillance = () => {
       </div>
 
       <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-500/10 rounded-lg border border-blue-200 dark:border-blue-800">
-        <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">
-          📱 Mr. Hajj Alert: ส่งแจ้งเตือนอัตโนมัติสำหรับกรณีที่เสี่ยง
+        <p className="text-xs text-blue-600 dark:text-blue-300 font-medium flex items-center gap-2">
+          <PhoneIcon className="w-4 h-4" /> Mr. Hajj Alert: ส่งแจ้งเตือนอัตโนมัติสำหรับกรณีที่เสี่ยง
         </p>
       </div>
     </div>

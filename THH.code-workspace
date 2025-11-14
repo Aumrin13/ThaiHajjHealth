@@ -2,10 +2,9 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../BackEnd_API"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"powershell.cwd": "BackEnd_API"
+	}
 }

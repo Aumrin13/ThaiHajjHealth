@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { UserIcon, GroupIcon, PieChartIcon } from '@/icons';
+import { LightbulbIcon } from '@/components/icons/HealthIcons';
 
 export default function SignInSelectionPage() {
   const userTypes = [
@@ -148,9 +149,13 @@ export default function SignInSelectionPage() {
         {/* Bottom Tip Section */}
         <div className="text-center">
           <div className="p-3 lg:p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700 rounded-lg lg:rounded-xl">
-            <p className="text-xs lg:text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
-              <strong>💡 เคล็ดลับ:</strong> ใช้ ThaiD เพื่อการเข้าสู่ระบบที่ปลอดภัยและสะดวก<br className="hidden sm:block"/>
-              หรือเลือกประเภทผู้ใช้ตามสิทธิ์ของคุณ
+            <p className="text-xs lg:text-sm text-amber-800 dark:text-amber-200 leading-relaxed flex items-center justify-center gap-2 flex-wrap">
+              <strong className="flex items-center gap-1">
+                <LightbulbIcon className="w-4 h-4" /> เคล็ดลับ:
+              </strong>
+              <span>ใช้ ThaiD เพื่อการเข้าสู่ระบบที่ปลอดภัยและสะดวก</span>
+              <br className="hidden sm:block"/>
+              <span>หรือเลือกประเภทผู้ใช้ตามสิทธิ์ของคุณ</span>
             </p>
           </div>
         </div>

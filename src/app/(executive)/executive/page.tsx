@@ -1,8 +1,12 @@
+"use client";
+
+import React from "react";
 import { ExecutiveGuard } from '@/components/auth/AuthGuard';
 import { UserIcon, GroupIcon, CheckCircleIcon, ArrowUpIcon, PieChartIcon, DocsIcon, DownloadIcon, AlertIcon, TimeIcon } from '@/icons';
 import Image from 'next/image';
+import { ArrowRightIcon } from "@/components/icons/HealthIcons";
 
-export default function ExecutiveDashboard() {
+export default function ExecutivePage() {
   return (
     <ExecutiveGuard>
       <div className="container mx-auto px-4 py-8">
@@ -137,8 +141,8 @@ export default function ExecutiveDashboard() {
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
                 รายงานเชิงวิเคราะห์
               </h2>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                ดูทั้งหมด →
+              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+                ดูทั้งหมด <ArrowRightIcon className="w-4 h-4" />
               </button>
             </div>
             <div className="space-y-3">

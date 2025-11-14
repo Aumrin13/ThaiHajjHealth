@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Badge from "../ui/badge/Badge";
+import { CheckCircle2Icon } from "../icons/HealthIcons";
 
 export const OneIDHealthRecord = () => {
   return (
@@ -44,8 +45,18 @@ export const OneIDHealthRecord = () => {
       </div>
 
       <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-500/10 rounded-lg border border-blue-200 dark:border-blue-800">
-        <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">
-          ✓ เชื่อมข้อมูลจากหลายหน่วยงาน | ✓ ไม่มีข้อมูลซ้ำซ้อน | ✓ ความต่อเนื่องของการดูแล
+        <p className="text-xs text-blue-600 dark:text-blue-300 font-medium flex items-center gap-2 flex-wrap">
+          <span className="flex items-center gap-1">
+            <CheckCircle2Icon className="w-3 h-3" /> เชื่อมข้อมูลจากหลายหน่วยงาน
+          </span>
+          <span>|</span>
+          <span className="flex items-center gap-1">
+            <CheckCircle2Icon className="w-3 h-3" /> ไม่มีข้อมูลซ้ำซ้อน
+          </span>
+          <span>|</span>
+          <span className="flex items-center gap-1">
+            <CheckCircle2Icon className="w-3 h-3" /> ความต่อเนื่องของการดูแล
+          </span>
         </p>
       </div>
     </div>

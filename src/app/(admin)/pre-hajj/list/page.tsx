@@ -3,6 +3,12 @@ import React, { useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import Badge from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
+import {
+  UsersIcon,
+  CheckCircle2Icon,
+  ClockIcon,
+  XCircleIcon,
+} from "@/components/icons/HealthIcons";
 
 // Fake Data
 const FAKE_PILGRIMS = [
@@ -127,7 +133,7 @@ export default function PilgrimsListPage() {
               <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{FAKE_PILGRIMS.length}</p>
             </div>
             <div className="p-3 bg-blue-500 rounded-lg text-white">
-              👥
+              <UsersIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -141,7 +147,7 @@ export default function PilgrimsListPage() {
               </p>
             </div>
             <div className="p-3 bg-green-500 rounded-lg text-white">
-              ✓
+              <CheckCircle2Icon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -155,7 +161,7 @@ export default function PilgrimsListPage() {
               </p>
             </div>
             <div className="p-3 bg-yellow-500 rounded-lg text-white">
-              ⏳
+              <ClockIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
@@ -169,7 +175,7 @@ export default function PilgrimsListPage() {
               </p>
             </div>
             <div className="p-3 bg-red-500 rounded-lg text-white">
-              ✕
+              <XCircleIcon className="w-6 h-6" />
             </div>
           </div>
         </ComponentCard>
