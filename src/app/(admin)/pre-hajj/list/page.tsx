@@ -300,7 +300,7 @@ export default function PilgrimsListPage() {
                     {pilgrim.diseases.length > 0 ? (
                       <div className="flex flex-wrap gap-1">
                         {pilgrim.diseases.map((disease, idx) => (
-                          <Badge key={idx} variant="warning" size="sm">
+                          <Badge key={idx} color="warning" variant="solid" size="sm">
                             {disease}
                           </Badge>
                         ))}
