@@ -10,6 +10,8 @@ const prompt = Prompt({
   subsets: ['latin', 'thai'],
   display: 'swap',
   fallback: ['system-ui', 'arial'],
+  preload: false,
+  adjustFontFallback: false,
 });
 
 export const metadata = {
