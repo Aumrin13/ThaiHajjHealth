@@ -1,5 +1,6 @@
-type ApiUserWithPermissions = import('@/types/api').User & { permissions?: string[] };
+
 "use client";
+type ApiUserWithPermissions = import('@/types/api').User & { permissions?: string[] };
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
