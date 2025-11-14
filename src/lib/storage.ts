@@ -42,18 +42,18 @@ export const storage = {
   },
 
   // User
-  getUser(): any | null {
+  getUser(): Record<string, unknown> | null {
     if (typeof window === 'undefined') return null;
     const userStr = localStorage.getItem(STORAGE_KEYS.USER);
     if (!userStr) return null;
     try {
-      return JSON.parse(userStr);
+      return JSON.parse(userStr) as Record<string, unknown>;
     } catch {
       return null;
     }
   },
 
-  setUser(user: any): void {
+  setUser(user: Record<string, unknown>): void {
     if (typeof window === 'undefined') return;
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
   },

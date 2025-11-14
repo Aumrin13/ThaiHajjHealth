@@ -5,13 +5,13 @@
 
 const API_BASE_URL = 'https://api-thaihajjhealth.southhealthcenter.com';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: {
     code: string;
     message: string;
-    details?: any;
+    details?: Record<string, unknown>;
   };
 }
 
@@ -110,13 +110,13 @@ class ApiClient {
    */
   async post<T>(
     endpoint: string,
-    body?: any,
+    body?: unknown,
     token?: string,
     isFormData = false
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'POST',
-      body: isFormData ? body : JSON.stringify(body),
+      body: isFormData ? (body as BodyInit) : JSON.stringify(body),
       token,
       isFormData,
     });
@@ -127,13 +127,13 @@ class ApiClient {
    */
   async put<T>(
     endpoint: string,
-    body?: any,
+    body?: unknown,
     token?: string,
     isFormData = false
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'PUT',
-      body: isFormData ? body : JSON.stringify(body),
+      body: isFormData ? (body as BodyInit) : JSON.stringify(body),
       token,
       isFormData,
     });
@@ -154,7 +154,7 @@ class ApiClient {
    */
   async patch<T>(
     endpoint: string,
-    body?: any,
+    body?: unknown,
     token?: string
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
