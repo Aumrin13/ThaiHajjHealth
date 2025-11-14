@@ -228,7 +228,8 @@ export default function VaccinationPage() {
                     </p>
                   </div>
                   <Badge
-                    variant={vac.priority === "สูง" ? "error" : "warning"}
+                    color={vac.priority === "สูง" ? "error" : "warning"}
+                    variant="solid"
                     size="sm"
                   >
                     {vac.priority}
