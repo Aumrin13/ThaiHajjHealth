@@ -23,9 +23,10 @@ export function RoleGuard({ children, allowedRoles, redirectTo = '/login' }: Rol
       return;
     }
 
-    if (!allowedRoles.includes(user.role)) {
+    const userRoleUpper = user.role.toUpperCase() as UserRole;
+    if (!allowedRoles.includes(userRoleUpper)) {
       // Redirect to appropriate dashboard based on role
-      switch (user.role) {
+      switch (userRoleUpper) {
         case 'ADMIN':
           router.push('/admin');
           break;
