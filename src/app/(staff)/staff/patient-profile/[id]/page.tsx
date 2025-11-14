@@ -21,8 +21,55 @@ import {
   AlertCircleIcon,
 } from "@/components/icons/HealthIcons";
 
+// Types
+interface PatientData {
+  id: string;
+  cid: string;
+  fullName: string;
+  nameEn: string;
+  birthDate: string;
+  age: number;
+  gender: string;
+  bloodType: string;
+  religion: string;
+  address: {
+    houseNo: string;
+    moo: string;
+    soi: string;
+    road: string;
+    subDistrict: string;
+    district: string;
+    province: string;
+    postalCode: string;
+  };
+  contact: {
+    phone: string;
+    email: string;
+    lineId: string;
+  };
+  emergencyContact: {
+    name: string;
+    relation: string;
+    phone: string;
+  };
+  passport: {
+    number: string;
+    issueDate: string;
+    expiryDate: string;
+    issuePlace: string;
+  };
+  hajjInfo: {
+    group: string;
+    packageType: string;
+    departureDate: string;
+    returnDate: string;
+    airline: string;
+  };
+  [key: string]: unknown;
+}
+
 // Fake Data - ข้อมูลผู้เดินทาง
-const PATIENT_DATA: Record<string, any> = {
+const PATIENT_DATA: Record<string, PatientData> = {
   P001: {
     id: "P001",
     cid: "1234567890123",
@@ -112,7 +159,7 @@ export default function PatientProfilePage() {
                 <Badge variant="solid" color="primary" size="sm">
                   {patient.age} ปี
                 </Badge>
-                <Badge variant="solid" color="secondary" size="sm">
+                <Badge variant="solid" color="info" size="sm">
                   {patient.gender}
                 </Badge>
                 <Badge variant="solid" color="success" size="sm">
@@ -183,15 +230,15 @@ export default function PatientProfilePage() {
 
       {/* Tab Content */}
       {activeTab === "general" && <GeneralInfoTab patient={patient} />}
-      {activeTab === "training" && <TrainingTab patientId={patientId} />}
-      {activeTab === "health" && <HealthCheckTab patientId={patientId} />}
-      {activeTab === "vaccination" && <VaccinationTab patientId={patientId} />}
+      {activeTab === "training" && <TrainingTab />}
+      {activeTab === "health" && <HealthCheckTab />}
+      {activeTab === "vaccination" && <VaccinationTab />}
     </div>
   );
 }
 
 // Tab: ข้อมูลทั่วไป
-function GeneralInfoTab({ patient }: { patient: any }) {
+function GeneralInfoTab({ patient }: { patient: PatientData }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -202,7 +249,7 @@ function GeneralInfoTab({ patient }: { patient: any }) {
         </h2>
         <Button
           size="sm"
-          variant={isEditing ? "solid" : "outline"}
+          variant={isEditing ? "primary" : "outline"}
           onClick={() => setIsEditing(!isEditing)}
         >
           {isEditing ? (
@@ -383,7 +430,7 @@ function GeneralInfoTab({ patient }: { patient: any }) {
 }
 
 // Tab: การอบรม
-function TrainingTab({ patientId }: { patientId: string }) {
+function TrainingTab() {
   // Fake Data - หลักสูตรอบรมของผู้เดินทาง
   const TRAINING_DATA = [
     {
@@ -437,7 +484,7 @@ function TrainingTab({ patientId }: { patientId: string }) {
       date: "2024-11-10",
       location: "Online",
       status: "ยังไม่เริ่ม",
-      statusColor: "secondary" as const,
+      statusColor: "info" as const,
       score: null,
       certificate: false,
       attendance: "0%",
@@ -686,7 +733,7 @@ function TrainingTab({ patientId }: { patientId: string }) {
 }
 
 // Tab: การตรวจสุขภาพ
-function HealthCheckTab({ patientId }: { patientId: string }) {
+function HealthCheckTab() {
   // Fake Data - ผลการตรวจสุขภาพ 4 ครั้ง
   const HEALTH_CHECKS = [
     {
@@ -749,7 +796,7 @@ function HealthCheckTab({ patientId }: { patientId: string }) {
       examiner: "",
       location: "รพ.สมุทรปราการ",
       status: "ยังไม่ถึงกำหนด",
-      statusColor: "secondary" as const,
+      statusColor: "info" as const,
       vitalSigns: null,
       assessment: "",
       recommendations: "",
@@ -1222,7 +1269,7 @@ function HealthCheckTab({ patientId }: { patientId: string }) {
 }
 
 // Tab: การฉีดวัคซีน
-function VaccinationTab({ patientId }: { patientId: string }) {
+function VaccinationTab() {
   // Fake Data - วัคซีนที่ต้องฉีด
   const REQUIRED_VACCINES = [
     {
@@ -1395,7 +1442,7 @@ function VaccinationTab({ patientId }: { patientId: string }) {
                       </h3>
                       <div className="flex gap-2">
                         {vaccine.required && (
-                          <Badge variant="solid" color="danger" size="sm">
+                          <Badge variant="solid" color="error" size="sm">
                             บังคับ
                           </Badge>
                         )}
@@ -1658,7 +1705,7 @@ function VaccinationTab({ patientId }: { patientId: string }) {
                   <p className="text-gray-600 dark:text-gray-400">{selectedVaccine.nameEn}</p>
                   <div className="flex gap-2 mt-2">
                     {selectedVaccine.required && (
-                      <Badge variant="solid" color="danger" size="sm">
+                      <Badge variant="solid" color="error" size="sm">
                         บังคับ
                       </Badge>
                     )}

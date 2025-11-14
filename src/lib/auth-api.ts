@@ -7,7 +7,6 @@ import { apiClient, ApiResponse } from './api-client';
 import type {
   LoginRequest,
   LoginResponse,
-  RefreshTokenRequest,
   RefreshTokenResponse,
   LogoutResponse,
   ChangePasswordRequest,

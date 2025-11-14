@@ -8,6 +8,8 @@ import { AuthProvider } from '@/providers/AuthProvider';
 const prompt = Prompt({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin', 'thai'],
+  display: 'swap',
+  fallback: ['system-ui', 'arial'],
 });
 
 export const metadata = {

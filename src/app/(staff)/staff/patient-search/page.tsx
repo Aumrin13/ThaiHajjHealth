@@ -7,12 +7,7 @@ import Button from "@/components/ui/button/Button";
 import {
   SearchIcon,
   ClipboardIcon,
-  UsersIcon,
-  CheckCircle2Icon,
-  ClockIcon,
   LightbulbIcon,
-  PhoneIcon,
-  MailIcon,
   XCircleIcon,
   ArrowRightIcon,
 } from "@/components/icons/HealthIcons";

@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/providers/AuthProvider';
 import Button from '@/components/ui/button/Button';
 
 export default function UnifiedLoginPage() {
-  const router = useRouter();
   const { login, isLoading } = useAuth();
   
   const [formData, setFormData] = useState({

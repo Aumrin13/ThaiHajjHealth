@@ -235,7 +235,9 @@ export default function TrainingPage() {
               <p className="text-sm text-gray-600 dark:text-gray-400">หลักสูตรทั้งหมด</p>
               <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{totalCourses}</p>
             </div>
-            <div className="p-3 bg-blue-500 rounded-lg text-white text-2xl">📚</div>
+            <div className="p-3 bg-blue-500 rounded-lg text-white">
+              <CalendarDaysIcon className="w-8 h-8" />
+            </div>
           </div>
         </ComponentCard>
 
@@ -353,7 +355,7 @@ export default function TrainingPage() {
                               {course.status}
                             </Badge>
                             {course.mandatory && (
-                              <Badge variant="solid" color="danger" size="sm">
+                              <Badge variant="solid" color="error" size="sm">
                                 บังคับ
                               </Badge>
                             )}
@@ -544,7 +546,7 @@ export default function TrainingPage() {
                         const isCompleted = participant.completedCourses.includes(courseId);
                         return (
                           <Badge
-                          <Badge
+                            key={courseId}
                             variant={isCompleted ? "solid" : "light"}
                             color={isCompleted ? "success" : "primary"}
                             size="sm"
@@ -568,7 +570,7 @@ export default function TrainingPage() {
       {/* Course Detail Modal */}
       {selectedCourse && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <ComponentCard className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <ComponentCard title="" className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <div className="space-y-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -577,7 +579,7 @@ export default function TrainingPage() {
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     {selectedCourse.courseNameEn}
-                  </h2>
+                  </p>
                 </div>
                 <button
                   onClick={() => setSelectedCourse(null)}
@@ -595,7 +597,7 @@ export default function TrainingPage() {
                   {selectedCourse.category}
                 </Badge>
                 {selectedCourse.mandatory && (
-                  <Badge variant="solid" color="danger">
+                  <Badge variant="solid" color="error">
                     หลักสูตรบังคับ
                   </Badge>
                 )}
