@@ -311,7 +311,7 @@ export default function VaccinationPage() {
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                         {vac.pilgrimName}
                       </h3>
-                      <Badge variant={vac.statusColor} size="sm">
+                      <Badge color={vac.statusColor} variant="solid" size="sm">
                         {vac.status}
                       </Badge>
                     </div>
