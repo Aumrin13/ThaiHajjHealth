@@ -53,7 +53,7 @@ export function RoleGuard({ children, allowedRoles, redirectTo = '/login' }: Rol
     );
   }
 
-  if (!isAuthenticated || !user || !allowedRoles.includes(user.role)) {
+  if (!isAuthenticated || !user || !allowedRoles.includes(user.role.toUpperCase() as UserRole)) {
     return null;
   }
 
