@@ -1,3 +1,4 @@
+type ApiUserWithPermissions = import('@/types/api').User & { permissions?: string[] };
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -37,16 +38,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Verify token with backend
       const response = await authAPI.getCurrentUser(token);
       if (response.success && response.data) {
-        const apiUser = response.data as any;
+        const apiUser = response.data as ApiUserWithPermissions;
         const mappedUser: User = {
           ...apiUser,
-          role: (apiUser.role || '').toLowerCase(),
+          role: ((apiUser.role || '').toLowerCase() as UserRole),
           permissions: Array.isArray(apiUser.permissions)
             ? apiUser.permissions
-            : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole])
-              ? ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole]
+            : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[(apiUser.role || '').toLowerCase() as UserRole])
+              ? ROLE_PERMISSIONS[(apiUser.role || '').toLowerCase() as UserRole]
               : [],
           isActive: apiUser.status ? apiUser.status === 'ACTIVE' : true,
+          lastLogin: apiUser.lastLogin ? new Date(apiUser.lastLogin) : undefined,
+          createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date(),
+          updatedAt: apiUser.updatedAt ? new Date(apiUser.updatedAt) : new Date(),
         };
         setUser(mappedUser);
         storage.setUser({ ...mappedUser });
@@ -74,16 +78,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { user, accessToken, refreshToken } = response.data;
 
       // แปลง user จาก API (src/types/api) ให้ตรงกับ type User (src/types/auth)
-      const apiUser = user as any;
+      const apiUser = user as ApiUserWithPermissions;
       const mappedUser: User = {
         ...apiUser,
-        role: (apiUser.role || '').toLowerCase(),
+        role: ((apiUser.role || '').toLowerCase() as UserRole),
         permissions: Array.isArray(apiUser.permissions)
           ? apiUser.permissions
-          : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole])
-            ? ROLE_PERMISSIONS[apiUser.role.toLowerCase() as UserRole]
+          : (apiUser.role && typeof apiUser.role === 'string' && ROLE_PERMISSIONS[(apiUser.role || '').toLowerCase() as UserRole])
+            ? ROLE_PERMISSIONS[(apiUser.role || '').toLowerCase() as UserRole]
             : [],
         isActive: apiUser.status ? apiUser.status === 'ACTIVE' : true,
+        lastLogin: apiUser.lastLogin ? new Date(apiUser.lastLogin) : undefined,
+        createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date(),
+        updatedAt: apiUser.updatedAt ? new Date(apiUser.updatedAt) : new Date(),
       };
 
       // Save to storage
