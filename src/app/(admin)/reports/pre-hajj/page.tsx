@@ -192,7 +192,7 @@ export default function PreHajjReportsPage() {
             {HEALTH_STATUS.map((item, idx) => (
               <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Badge variant={item.color} size="sm">
+                  <Badge color={item.color} variant="solid" size="sm">
                     {item.status}
                   </Badge>
                 </div>
@@ -247,7 +247,7 @@ export default function PreHajjReportsPage() {
                 <h4 className="font-medium text-gray-800 dark:text-white">
                   {disease.name}
                 </h4>
-                <Badge variant={disease.severity} size="sm">
+                <Badge color={disease.severity} variant="solid" size="sm">
                   {disease.percentage}%
                 </Badge>
               </div>
