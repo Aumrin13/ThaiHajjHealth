@@ -86,20 +86,41 @@ const AppHeader: React.FC = () => {
 
           <Link href="/" className="lg:hidden">
             <Image
-              width={154}
-              height={32}
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
+              width={120}
+              height={28}
+              className="dark:hidden w-28 h-auto object-contain"
+              src="/images/logo/thh_logo.png"
               alt="Thai Hajj Health"
+              priority
             />
             <Image
-              width={154}
-              height={32}
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
+              width={120}
+              height={28}
+              className="hidden dark:block w-28 h-auto object-contain"
+              src="/images/logo/thh_logo.png"
               alt="Thai Hajj Health"
+              priority
             />
           </Link>
+        {/* Desktop logo (centered, larger) */}
+        <Link href="/" className="hidden lg:flex items-center">
+          <Image
+            width={154}
+            height={32}
+            className="dark:hidden w-40 h-auto object-contain"
+            src="/images/logo/thh_logo.png"
+            alt="Thai Hajj Health"
+            priority
+          />
+          <Image
+            width={154}
+            height={32}
+            className="hidden dark:block w-40 h-auto object-contain"
+            src="/images/logo/thh_logo.png"
+            alt="Thai Hajj Health"
+            priority
+          />
+        </Link>
 
           <button
             onClick={toggleApplicationMenu}
