@@ -9,7 +9,7 @@ export default function NotFound() {
       <GridShape />
       <div className="mx-auto w-full max-w-[320px] text-center sm:max-w-[472px]">
         <Image
-          src="/images/logo/logo.svg"
+          src="/images/logo/thh_logo.png"
           alt="Thai Hajj Health Logo"
           width={154}
           height={32}
