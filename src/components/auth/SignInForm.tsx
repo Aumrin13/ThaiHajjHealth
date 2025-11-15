@@ -7,15 +7,16 @@ import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useContext } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
 
-export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const auth = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,19 +29,15 @@ export default function SignInForm() {
       setError("Password is required");
       return;
     }
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        username,
-        password,
-      });
-      if (res?.error) {
-        setError(res.error);
-      } else {
-        router.push("/");
-      }
-    } catch {
-      setError("Login failed");
+    if (!auth) {
+      setError("Auth context not found");
+      return;
+    }
+    const res = await auth.login(username, password);
+    if (!res.success) {
+      setError(res.error || "Login failed");
+    } else {
+      router.push("/");
     }
   };
   return (
