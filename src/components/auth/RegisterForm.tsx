@@ -23,10 +23,15 @@ export default function RegisterForm() {
     workplace: "",
     position: "",
   });
-  const [provinces, setProvinces] = useState([]);
-  const [amphurs, setAmphurs] = useState([]); // district
-  const [subdistricts, setSubdistricts] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
+  interface Province { id?: string | number; name: string; }
+  interface Amphur { id?: string | number; name: string; }
+  interface Subdistrict { id?: string | number; name: string; }
+  interface Hospital { id?: string | number; name: string; code?: string; }
+
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [amphurs, setAmphurs] = useState<Amphur[]>([]); // district
+  const [subdistricts, setSubdistricts] = useState<Subdistrict[]>([]);
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -129,7 +134,7 @@ export default function RegisterForm() {
         <Label>โรงพยาบาล</Label>
         <Select name="hospital" value={form.hospital} onChange={handleChange} required>
           <option value="">เลือกโรงพยาบาล</option>
-          {hospitals.map((h: any) => (
+          {hospitals.map((h) => (
             <option key={h.id || h.code} value={h.name}>{h.name}</option>
           ))}
         </Select>
@@ -146,7 +151,7 @@ export default function RegisterForm() {
         <Label>จังหวัด</Label>
         <Select name="province" value={form.province} onChange={handleChange} required>
           <option value="">เลือกจังหวัด</option>
-          {provinces.map((p: any) => (
+          {provinces.map((p) => (
             <option key={p.id || p.name} value={p.name}>{p.name}</option>
           ))}
         </Select>
@@ -155,7 +160,7 @@ export default function RegisterForm() {
         <Label>อำเภอ/เขต</Label>
         <Select name="district" value={form.district} onChange={handleChange} required>
           <option value="">เลือกอำเภอ/เขต</option>
-          {amphurs.map((a: any) => (
+          {amphurs.map((a) => (
             <option key={a.id || a.name} value={a.name}>{a.name}</option>
           ))}
         </Select>
@@ -164,7 +169,7 @@ export default function RegisterForm() {
         <Label>ตำบล/แขวง</Label>
         <Select name="subdistrict" value={form.subdistrict} onChange={handleChange} required>
           <option value="">เลือกตำบล/แขวง</option>
-          {subdistricts.map((s: any) => (
+          {subdistricts.map((s) => (
             <option key={s.id || s.name} value={s.name}>{s.name}</option>
           ))}
         </Select>
