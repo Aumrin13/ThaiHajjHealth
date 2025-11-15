@@ -10,7 +10,7 @@ export default function UnifiedLoginPage() {
   const { login, isLoading } = useAuth();
   
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -20,12 +20,12 @@ export default function UnifiedLoginPage() {
     e.preventDefault();
     setError('');
 
-    if (!formData.email || !formData.password) {
-      setError('กรุณากรอกอีเมลและรหัสผ่าน');
+    if (!formData.username || !formData.password) {
+      setError('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
       return;
     }
 
-    const result = await login(formData.email, formData.password);
+    const result = await login(formData.username, formData.password);
 
     if (!result.success) {
       setError(result.error || 'เข้าสู่ระบบไม่สำเร็จ');
@@ -76,16 +76,16 @@ export default function UnifiedLoginPage() {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
+            {/* Username */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                อีเมล
+                ชื่อผู้ใช้
               </label>
               <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="example@thh.com"
+                type="text"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                placeholder="username"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={isLoading}
               />
