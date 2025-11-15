@@ -1,10 +1,14 @@
 "use client";
 
+
 import React, { useState } from "react";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import Select from "@/components/form/Select";
+import PhoneInput from "@/components/form/group-input/PhoneInput";
+import ComponentCard from "@/components/common/ComponentCard";
+
 
 export default function RegisterForm() {
   // State for form fields
@@ -35,6 +39,13 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // For PhoneInput country codes (example, can be customized)
+  const countries = [
+    { code: "TH", label: "+66" },
+    { code: "US", label: "+1" },
+    { code: "GB", label: "+44" },
+  ];
 
 
   // Fetch provinces, hospitals on mount
@@ -110,81 +121,93 @@ export default function RegisterForm() {
   };
 
   return (
-    <form className="space-y-6 max-w-xl mx-auto" onSubmit={handleSubmit}>
-      <h2 className="text-xl font-bold mb-4">สมัครสมาชิก</h2>
-      {error && <div className="text-error-500 text-sm">{error}</div>}
-      {success && <div className="text-success-500 text-sm">{success}</div>}
-      <div>
-        <Label>ชื่อผู้ใช้ (username)</Label>
-        <Input name="username" value={form.username} onChange={handleChange} required />
-      </div>
-      <div>
-        <Label>รหัสผ่าน</Label>
-        <Input name="password" type="password" value={form.password} onChange={handleChange} required />
-      </div>
-      <div>
-        <Label>อีเมล</Label>
-        <Input name="email" type="email" value={form.email} onChange={handleChange} required />
-      </div>
-      <div>
-        <Label>ชื่อ-นามสกุล</Label>
-        <Input name="fullName" value={form.fullName} onChange={handleChange} required />
-      </div>
-      <div>
-        <Label>โรงพยาบาล</Label>
-        <Select
-          options={hospitals.map((h) => ({ value: h.name, label: h.name }))}
-          placeholder="เลือกโรงพยาบาล"
-          onChange={value => setForm({ ...form, hospital: value })}
-          defaultValue={form.hospital}
-        />
-      </div>
-      <div>
-        <Label>เบอร์โทรศัพท์</Label>
-        <Input name="phoneNumber" value={form.phoneNumber} onChange={handleChange} required />
-      </div>
-      <div>
-        <Label>ที่อยู่</Label>
-        <Input name="address" value={form.address} onChange={handleChange} />
-      </div>
-      <div>
-        <Label>จังหวัด</Label>
-        <Select
-          options={provinces.map((p) => ({ value: p.name, label: p.name }))}
-          placeholder="เลือกจังหวัด"
-          onChange={value => setForm({ ...form, province: value })}
-          defaultValue={form.province}
-        />
-      </div>
-      <div>
-        <Label>อำเภอ/เขต</Label>
-        <Select
-          options={amphurs.map((a) => ({ value: a.name, label: a.name }))}
-          placeholder="เลือกอำเภอ/เขต"
-          onChange={value => setForm({ ...form, district: value })}
-          defaultValue={form.district}
-        />
-      </div>
-      <div>
-        <Label>ตำบล/แขวง</Label>
-        <Select
-          options={subdistricts.map((s) => ({ value: s.name, label: s.name }))}
-          placeholder="เลือกตำบล/แขวง"
-          onChange={value => setForm({ ...form, subdistrict: value })}
-          defaultValue={form.subdistrict}
-        />
-      </div>
-      <div>
-        <Label>สถานที่ทำงาน</Label>
-        <Input name="workplace" value={form.workplace} onChange={handleChange} />
-      </div>
-      <div>
-        <Label>ตำแหน่ง</Label>
-        <Input name="position" value={form.position} onChange={handleChange} />
-      </div>
-      <Button type="submit" className="w-full" size="sm" disabled={loading}>
-        {loading ? "กำลังสมัคร..." : "สมัครสมาชิก"}
-      </Button>
-    </form>
+    <ComponentCard title="สมัครสมาชิก" className="max-w-xl mx-auto mt-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        {error && <div className="text-error-500 text-sm mb-2">{error}</div>}
+        {success && <div className="text-success-500 text-sm mb-2">{success}</div>}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label>ชื่อผู้ใช้ (username)</Label>
+            <Input name="username" value={form.username} onChange={handleChange} required />
+          </div>
+          <div>
+            <Label>รหัสผ่าน</Label>
+            <Input name="password" type="password" value={form.password} onChange={handleChange} required />
+          </div>
+          <div className="md:col-span-2">
+            <Label>อีเมล</Label>
+            <Input name="email" type="email" value={form.email} onChange={handleChange} required />
+          </div>
+          <div className="md:col-span-2">
+            <Label>ชื่อ-นามสกุล</Label>
+            <Input name="fullName" value={form.fullName} onChange={handleChange} required />
+          </div>
+          <div className="md:col-span-2">
+            <Label>โรงพยาบาล</Label>
+            <Select
+              options={hospitals.map((h) => ({ value: h.name, label: h.name }))}
+              placeholder="เลือกโรงพยาบาล"
+              onChange={value => setForm({ ...form, hospital: value })}
+              defaultValue={form.hospital}
+            />
+          </div>
+          <div className="md:col-span-2">
+            <Label>เบอร์โทรศัพท์</Label>
+            <PhoneInput
+              countries={countries}
+              placeholder="เช่น 0812345678"
+              onChange={value => setForm({ ...form, phoneNumber: value })}
+              selectPosition="start"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
+            <Label>ที่อยู่</Label>
+            <Input name="address" value={form.address} onChange={handleChange} />
+          </div>
+          <div>
+            <Label>จังหวัด</Label>
+            <Select
+              options={provinces.map((p) => ({ value: p.name, label: p.name }))}
+              placeholder="เลือกจังหวัด"
+              onChange={value => setForm({ ...form, province: value })}
+              defaultValue={form.province}
+            />
+          </div>
+          <div>
+            <Label>อำเภอ/เขต</Label>
+            <Select
+              options={amphurs.map((a) => ({ value: a.name, label: a.name }))}
+              placeholder="เลือกอำเภอ/เขต"
+              onChange={value => setForm({ ...form, district: value })}
+              defaultValue={form.district}
+            />
+          </div>
+          <div>
+            <Label>ตำบล/แขวง</Label>
+            <Select
+              options={subdistricts.map((s) => ({ value: s.name, label: s.name }))}
+              placeholder="เลือกตำบล/แขวง"
+              onChange={value => setForm({ ...form, subdistrict: value })}
+              defaultValue={form.subdistrict}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label>สถานที่ทำงาน</Label>
+            <Input name="workplace" value={form.workplace} onChange={handleChange} />
+          </div>
+          <div>
+            <Label>ตำแหน่ง</Label>
+            <Input name="position" value={form.position} onChange={handleChange} />
+          </div>
+        </div>
+        <Button type="submit" className="w-full mt-4" size="sm" disabled={loading}>
+          {loading ? "กำลังสมัคร..." : "สมัครสมาชิก"}
+        </Button>
+      </form>
+    </ComponentCard>
   );
 }
