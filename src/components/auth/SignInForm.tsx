@@ -34,7 +34,11 @@ export default function SignInForm() {
     }
     const res = await auth.login(username, password);
     if (!res.success) {
-      setError(res.error || "Login failed");
+      if (res.error && res.error.toLowerCase().includes("invalid credentials")) {
+        setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ");
+      } else {
+        setError(res.error || "Login failed");
+      }
     }
   };
   return (
