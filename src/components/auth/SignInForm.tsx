@@ -7,7 +7,6 @@ import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
 
 import React, { useState, useContext } from "react";
-import { useRouter } from "next/navigation";
 import { AuthContext } from "@/providers/AuthProvider";
 
 export default function SignInForm() {
@@ -16,7 +15,6 @@ export default function SignInForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
   const auth = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent) => {
