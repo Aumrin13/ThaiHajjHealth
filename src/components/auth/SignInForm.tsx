@@ -39,7 +39,7 @@ export default function SignInForm() {
       } else {
         router.push("/");
       }
-    } catch (err: any) {
+    } catch {
       setError("Login failed");
     }
   };
