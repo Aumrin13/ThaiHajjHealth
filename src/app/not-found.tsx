@@ -7,11 +7,17 @@ export default function NotFound() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
       <GridShape />
-      <div className="mx-auto w-full max-w-[242px] text-center sm:max-w-[472px]">
+      <div className="mx-auto w-full max-w-[320px] text-center sm:max-w-[472px]">
+        <Image
+          src="/images/logo/logo.svg"
+          alt="Thai Hajj Health Logo"
+          width={154}
+          height={32}
+          className="mx-auto mb-6"
+        />
         <h1 className="mb-8 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">
-          ERROR
+          ไม่พบหน้าที่คุณต้องการ (404)
         </h1>
-
         <Image
           src="/images/error/404.svg"
           alt="404"
@@ -26,16 +32,15 @@ export default function NotFound() {
           width={472}
           height={152}
         />
-
         <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-          We can’t seem to find the page you are looking for!
+          ไม่พบหน้าที่คุณร้องขอ หรือ URL นี้อาจถูกลบหรือย้ายไปแล้ว<br />
+          กรุณาตรวจสอบลิงก์หรือกลับสู่หน้าหลัก
         </p>
-
         <Link
           href="/"
           className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
         >
-          Back to Home Page
+          กลับสู่หน้าหลัก
         </Link>
       </div>
       {/* <!-- Footer --> */}
