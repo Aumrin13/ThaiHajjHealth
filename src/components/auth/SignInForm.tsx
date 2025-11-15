@@ -37,8 +37,6 @@ export default function SignInForm() {
     const res = await auth.login(username, password);
     if (!res.success) {
       setError(res.error || "Login failed");
-    } else {
-      router.push("/");
     }
   };
   return (
