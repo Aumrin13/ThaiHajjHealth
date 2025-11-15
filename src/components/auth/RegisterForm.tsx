@@ -2,7 +2,7 @@
 
 
 import React, { useState } from "react";
-import { UserIcon, IdentificationIcon, Building2Icon } from "lucide-react";
+import { UserIcon, UserCircleIcon, Building2Icon } from "lucide-react";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
@@ -59,7 +59,7 @@ export default function RegisterForm() {
     {
       key: 2,
       label: "ข้อมูลส่วนตัว",
-      icon: <IdentificationIcon size={20} />,
+      icon: <UserCircleIcon size={20} />,
     },
     {
       key: 3,
