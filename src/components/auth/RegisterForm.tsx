@@ -132,12 +132,12 @@ export default function RegisterForm() {
       </div>
       <div>
         <Label>โรงพยาบาล</Label>
-        <Select name="hospital" value={form.hospital} onChange={handleChange} required>
-          <option value="">เลือกโรงพยาบาล</option>
-          {hospitals.map((h) => (
-            <option key={h.id || h.code} value={h.name}>{h.name}</option>
-          ))}
-        </Select>
+        <Select
+          options={hospitals.map((h) => ({ value: h.name, label: h.name }))}
+          placeholder="เลือกโรงพยาบาล"
+          onChange={value => setForm({ ...form, hospital: value })}
+          defaultValue={form.hospital}
+        />
       </div>
       <div>
         <Label>เบอร์โทรศัพท์</Label>
@@ -149,30 +149,30 @@ export default function RegisterForm() {
       </div>
       <div>
         <Label>จังหวัด</Label>
-        <Select name="province" value={form.province} onChange={handleChange} required>
-          <option value="">เลือกจังหวัด</option>
-          {provinces.map((p) => (
-            <option key={p.id || p.name} value={p.name}>{p.name}</option>
-          ))}
-        </Select>
+        <Select
+          options={provinces.map((p) => ({ value: p.name, label: p.name }))}
+          placeholder="เลือกจังหวัด"
+          onChange={value => setForm({ ...form, province: value })}
+          defaultValue={form.province}
+        />
       </div>
       <div>
         <Label>อำเภอ/เขต</Label>
-        <Select name="district" value={form.district} onChange={handleChange} required>
-          <option value="">เลือกอำเภอ/เขต</option>
-          {amphurs.map((a) => (
-            <option key={a.id || a.name} value={a.name}>{a.name}</option>
-          ))}
-        </Select>
+        <Select
+          options={amphurs.map((a) => ({ value: a.name, label: a.name }))}
+          placeholder="เลือกอำเภอ/เขต"
+          onChange={value => setForm({ ...form, district: value })}
+          defaultValue={form.district}
+        />
       </div>
       <div>
         <Label>ตำบล/แขวง</Label>
-        <Select name="subdistrict" value={form.subdistrict} onChange={handleChange} required>
-          <option value="">เลือกตำบล/แขวง</option>
-          {subdistricts.map((s) => (
-            <option key={s.id || s.name} value={s.name}>{s.name}</option>
-          ))}
-        </Select>
+        <Select
+          options={subdistricts.map((s) => ({ value: s.name, label: s.name }))}
+          placeholder="เลือกตำบล/แขวง"
+          onChange={value => setForm({ ...form, subdistrict: value })}
+          defaultValue={form.subdistrict}
+        />
       </div>
       <div>
         <Label>สถานที่ทำงาน</Label>
