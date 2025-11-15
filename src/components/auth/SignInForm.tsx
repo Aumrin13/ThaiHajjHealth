@@ -5,11 +5,12 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
-import React, { useState } from "react";
+
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 
+export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [username, setUsername] = useState("");
