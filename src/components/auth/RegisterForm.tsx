@@ -6,7 +6,6 @@ import { UserIcon, UserCircleIcon, Building2Icon } from "lucide-react";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import Select from "@/components/form/Select";
 import Select2 from "@/components/form/Select2";
 import PhoneInput from "@/components/form/group-input/PhoneInput";
 import ComponentCard from "@/components/common/ComponentCard";
