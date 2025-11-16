@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import UserTableActions from "./UserTableActions";
 
 interface User {
   id: string;
@@ -132,7 +133,16 @@ const UserTable: React.FC = () => {
                   <td className="border px-2 py-1">{u.email}</td>
                   <td className="border px-2 py-1">{u.role}</td>
                   <td className="border px-2 py-1">{u.status}</td>
-                  <td className="border px-2 py-1 text-center">-</td>
+                  <td className="border px-2 py-1 text-center">
+                    <UserTableActions
+                      userId={u.id}
+                      onView={id => alert(`ดูข้อมูลผู้ใช้ ${id}`)}
+                      onEdit={id => alert(`แก้ไขผู้ใช้ ${id}`)}
+                      onDelete={id => alert(`ลบผู้ใช้ ${id}`)}
+                      onStatus={id => alert(`เปลี่ยนสถานะผู้ใช้ ${id}`)}
+                      onRole={id => alert(`เปลี่ยน role ผู้ใช้ ${id}`)}
+                    />
+                  </td>
                 </tr>
               ))
             )}
