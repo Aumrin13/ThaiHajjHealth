@@ -26,6 +26,9 @@ const UserTable: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
 
+  // ดึง JWT token จาก localStorage (หรือ context/auth ตามจริง)
+  const getToken = () => typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+
   const fetchUsers = async () => {
     setLoading(true);
     setError("");
@@ -37,7 +40,10 @@ const UserTable: React.FC = () => {
         ...(role ? { role } : {}),
         ...(status ? { status } : {}),
       });
-      const res = await fetch(`/api/users?${params.toString()}`);
+      const token = getToken();
+      const res = await fetch(`/api/users?${params.toString()}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const data = await res.json();
       if (data.success) {
         setUsers(data.data);
