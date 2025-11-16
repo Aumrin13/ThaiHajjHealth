@@ -21,7 +21,7 @@ export default function RegisterForm() {
     email: "",
     password: "",
     fullName: "",
-    role: "PENDING",
+    role: "STAFF",
     hospital: "",
     phoneNumber: "",
     address: "",
@@ -31,6 +31,11 @@ export default function RegisterForm() {
     workplace: "",
     position: "",
   });
+  // Store selected ids for province, amphur, subdistrict, hospital
+  const [selectedProvince, setSelectedProvince] = useState<Province | null>(null);
+  const [selectedAmphur, setSelectedAmphur] = useState<Amphur | null>(null);
+  const [selectedSubdistrict, setSelectedSubdistrict] = useState<Subdistrict | null>(null);
+  const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
   interface Province { id: number; name: string; }
   interface Amphur { id: number; name: string; }
   interface Subdistrict { id: number; name: string; }
@@ -170,18 +175,19 @@ export default function RegisterForm() {
     if (step === 1) {
       if (!form.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
       if (!form.password) errors.password = "กรุณากรอกรหัสผ่าน";
+      else if (form.password.length < 6) errors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
       if (!form.email) errors.email = "กรุณากรอกอีเมล";
       else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) errors.email = "รูปแบบอีเมลไม่ถูกต้อง";
     }
     if (step === 2) {
       if (!form.fullName) errors.fullName = "กรุณากรอกชื่อ-นามสกุล";
       if (!form.phoneNumber) errors.phoneNumber = "กรุณากรอกเบอร์โทรศัพท์";
-      if (!form.province) errors.province = "กรุณาเลือกจังหวัด";
-      if (!form.district) errors.district = "กรุณาเลือกอำเภอ/เขต";
-      if (!form.subdistrict) errors.subdistrict = "กรุณาเลือกตำบล/แขวง";
+      if (!selectedProvince) errors.province = "กรุณาเลือกจังหวัด";
+      if (!selectedAmphur) errors.district = "กรุณาเลือกอำเภอ/เขต";
+      if (!selectedSubdistrict) errors.subdistrict = "กรุณาเลือกตำบล/แขวง";
     }
     if (step === 3) {
-      if (!form.hospital) errors.hospital = "กรุณาเลือกโรงพยาบาล";
+      if (!selectedHospital) errors.hospital = "กรุณาเลือกโรงพยาบาล";
     }
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -193,11 +199,27 @@ export default function RegisterForm() {
     setLoading(true);
     setError("");
     setSuccess("");
+    // Prepare payload with id/code for province, district, subdistrict, hospital
+    const payload = {
+      username: form.username,
+      email: form.email,
+      password: form.password,
+      fullName: form.fullName,
+      role: form.role,
+      hospital: selectedHospital ? selectedHospital.id || selectedHospital.code : "",
+      phoneNumber: form.phoneNumber,
+      address: form.address,
+      subdistrict: selectedSubdistrict ? selectedSubdistrict.id : "",
+      district: selectedAmphur ? selectedAmphur.id : "",
+      province: selectedProvince ? selectedProvince.id : "",
+      workplace: form.workplace,
+      position: form.position,
+    };
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (data.success) {
@@ -207,7 +229,7 @@ export default function RegisterForm() {
           email: "",
           password: "",
           fullName: "",
-          role: "PENDING",
+          role: "STAFF",
           hospital: "",
           phoneNumber: "",
           address: "",
@@ -217,6 +239,10 @@ export default function RegisterForm() {
           workplace: "",
           position: "",
         });
+        setSelectedProvince(null);
+        setSelectedAmphur(null);
+        setSelectedSubdistrict(null);
+        setSelectedHospital(null);
       } else {
         setError(data.message || "เกิดข้อผิดพลาด");
       }
@@ -308,6 +334,7 @@ export default function RegisterForm() {
                   const selected = provinces.find(p => p.name === value);
                   setForm({ ...form, province: value });
                   setProvinceId(selected ? selected.id : null);
+                  setSelectedProvince(selected || null);
                   setFieldErrors((prev) => ({ ...prev, province: "" }));
                 }}
                 defaultValue={form.province}
@@ -324,6 +351,7 @@ export default function RegisterForm() {
                   const selected = amphurs.find(a => a.name === value);
                   setForm({ ...form, district: value });
                   setAmphurId(selected ? selected.id : null);
+                  setSelectedAmphur(selected || null);
                   setFieldErrors((prev) => ({ ...prev, district: "" }));
                 }}
                 defaultValue={form.district}
@@ -337,7 +365,9 @@ export default function RegisterForm() {
                 options={subdistricts.map((s) => ({ value: s.name, label: s.name, id: s.id }))}
                 placeholder="เลือกตำบล/แขวง"
                 onChange={value => {
+                  const selected = subdistricts.find(s => s.name === value);
                   setForm({ ...form, subdistrict: value });
+                  setSelectedSubdistrict(selected || null);
                   setFieldErrors((prev) => ({ ...prev, subdistrict: "" }));
                 }}
                 defaultValue={form.subdistrict}
@@ -353,10 +383,12 @@ export default function RegisterForm() {
             <div className="md:col-span-2">
               <Label>โรงพยาบาล</Label>
               <Select2
-                options={hospitals.map((h) => ({ value: h.name, label: h.name }))}
+                options={hospitals.map((h) => ({ value: h.name, label: h.name, id: h.id || h.code }))}
                 placeholder="เลือกโรงพยาบาล"
                 onChange={value => {
+                  const selected = hospitals.find(h => h.name === value);
                   setForm({ ...form, hospital: value });
+                  setSelectedHospital(selected || null);
                   setFieldErrors((prev) => ({ ...prev, hospital: "" }));
                 }}
                 defaultValue={form.hospital}
