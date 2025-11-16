@@ -337,7 +337,7 @@ export default function RegisterForm() {
                   setFieldErrors((prev) => ({ ...prev, province: "" }));
                 }}
                 defaultValue={form.province}
-                error={!!fieldErrors.province}
+                
               />
               {fieldErrors.province && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.province}</p>}
             </div>
@@ -354,7 +354,7 @@ export default function RegisterForm() {
                   setFieldErrors((prev) => ({ ...prev, district: "" }));
                 }}
                 defaultValue={form.district}
-                error={!!fieldErrors.district}
+                
               />
               {fieldErrors.district && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.district}</p>}
             </div>
@@ -370,7 +370,7 @@ export default function RegisterForm() {
                   setFieldErrors((prev) => ({ ...prev, subdistrict: "" }));
                 }}
                 defaultValue={form.subdistrict}
-                error={!!fieldErrors.subdistrict}
+                
               />
               {fieldErrors.subdistrict && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.subdistrict}</p>}
             </div>
@@ -391,7 +391,7 @@ export default function RegisterForm() {
                   setFieldErrors((prev) => ({ ...prev, hospital: "" }));
                 }}
                 defaultValue={form.hospital}
-                error={!!fieldErrors.hospital}
+
               />
               {fieldErrors.hospital && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.hospital}</p>}
             </div>
