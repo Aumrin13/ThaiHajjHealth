@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserTableActions from "./UserTableActions";
+import Alert from "../common/Alert";
 
 interface User {
   id: string;
@@ -16,6 +17,7 @@ const statuses = ["", "ACTIVE", "INACTIVE", "SUSPENDED"];
 
 const UserTable: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [alert, setAlert] = useState<{ open: boolean; type?: "success" | "error" | "info"; message: string }>({ open: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -68,6 +70,7 @@ const UserTable: React.FC = () => {
 
   return (
     <div>
+      <Alert open={alert.open} type={alert.type} message={alert.message} onClose={() => setAlert(a => ({ ...a, open: false }))} />
       <div className="flex flex-wrap gap-2 mb-4 items-end">
         <div>
           <label className="block text-xs font-medium mb-1">ค้นหา</label>
@@ -142,11 +145,11 @@ const UserTable: React.FC = () => {
                   <td className="border px-2 py-1 text-center">
                     <UserTableActions
                       userId={u.id}
-                      onView={id => alert(`ดูข้อมูลผู้ใช้ ${id}`)}
-                      onEdit={id => alert(`แก้ไขผู้ใช้ ${id}`)}
-                      onDelete={id => alert(`ลบผู้ใช้ ${id}`)}
-                      onStatus={id => alert(`เปลี่ยนสถานะผู้ใช้ ${id}`)}
-                      onRole={id => alert(`เปลี่ยน role ผู้ใช้ ${id}`)}
+                      onView={id => setAlert({ open: true, type: "info", message: `ดูข้อมูลผู้ใช้ ${id}` })}
+                      onEdit={id => setAlert({ open: true, type: "info", message: `แก้ไขผู้ใช้ ${id}` })}
+                      onDelete={id => setAlert({ open: true, type: "error", message: `ยืนยันลบผู้ใช้ ${id}` })}
+                      onStatus={id => setAlert({ open: true, type: "info", message: `เปลี่ยนสถานะผู้ใช้ ${id}` })}
+                      onRole={id => setAlert({ open: true, type: "info", message: `เปลี่ยน role ผู้ใช้ ${id}` })}
                     />
                   </td>
                 </tr>
