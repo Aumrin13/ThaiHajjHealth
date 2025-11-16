@@ -7,11 +7,14 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import Select from "@/components/form/Select";
+import Select2 from "@/components/form/Select2";
 import PhoneInput from "@/components/form/group-input/PhoneInput";
 import ComponentCard from "@/components/common/ComponentCard";
 
 
 export default function RegisterForm() {
+    // Error state for each field
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
   // State for form fields
   const [form, setForm] = useState({
     username: "",
@@ -28,15 +31,17 @@ export default function RegisterForm() {
     workplace: "",
     position: "",
   });
-  interface Province { id?: string | number; name: string; }
-  interface Amphur { id?: string | number; name: string; }
-  interface Subdistrict { id?: string | number; name: string; }
+  interface Province { id: number; name: string; }
+  interface Amphur { id: number; name: string; }
+  interface Subdistrict { id: number; name: string; }
   interface Hospital { id?: string | number; name: string; code?: string; }
 
   const [provinces, setProvinces] = useState<Province[]>([]);
-  const [amphurs, setAmphurs] = useState<Amphur[]>([]); // district
+  const [amphurs, setAmphurs] = useState<Amphur[]>([]);
   const [subdistricts, setSubdistricts] = useState<Subdistrict[]>([]);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const [provinceId, setProvinceId] = useState<number | null>(null);
+  const [amphurId, setAmphurId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -69,11 +74,66 @@ export default function RegisterForm() {
   ];
 
 
-  // Fetch provinces, hospitals on mount
+  // Fetch provinces on mount
   React.useEffect(() => {
-    fetch("/api/provinces").then(r => r.json()).then(data => setProvinces(data));
-    fetch("/api/hospitals").then(r => r.json()).then(data => setHospitals(data));
+    fetch("/api/provinces")
+      .then(r => r.json())
+      .then(data => setProvinces(data));
   }, []);
+
+  // Fetch amphurs when provinceId changes
+  React.useEffect(() => {
+    if (provinceId) {
+      fetch(`/api/amphurs?provinceId=${provinceId}`)
+        .then(r => r.json())
+        .then(data => setAmphurs(data));
+    } else {
+      setAmphurs([]);
+    }
+    setAmphurId(null);
+    setForm(f => ({ ...f, district: "", subdistrict: "" }));
+  }, [provinceId]);
+
+  // Fetch subdistricts when amphurId changes
+  React.useEffect(() => {
+    if (amphurId) {
+      fetch(`/api/districts?amphurId=${amphurId}`)
+        .then(r => r.json())
+        .then(data => setSubdistricts(data));
+    } else {
+      setSubdistricts([]);
+    }
+    setForm(f => ({ ...f, subdistrict: "" }));
+  }, [amphurId]);
+
+  // Fetch hospitals by location (province, amphur, subdistrict)
+  React.useEffect(() => {
+    if (form.province && form.district && form.subdistrict) {
+      const params = new URLSearchParams({
+        province: form.province,
+        amphur: form.district,
+        district: form.subdistrict,
+      });
+      fetch(`/api/hospitals/by-location?${params.toString()}`)
+        .then(r => r.json())
+        .then(data => setHospitals(data));
+    } else if (form.province && form.district) {
+      const params = new URLSearchParams({
+        province: form.province,
+        amphur: form.district,
+      });
+      fetch(`/api/hospitals/by-location?${params.toString()}`)
+        .then(r => r.json())
+        .then(data => setHospitals(data));
+    } else if (form.province) {
+      const params = new URLSearchParams({ province: form.province });
+      fetch(`/api/hospitals/by-location?${params.toString()}`)
+        .then(r => r.json())
+        .then(data => setHospitals(data));
+    } else {
+      setHospitals([]);
+    }
+  }, [form.province, form.district, form.subdistrict]);
 
   // Fetch amphurs (districts) when province changes
   React.useEffect(() => {
@@ -101,10 +161,35 @@ export default function RegisterForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setFieldErrors((prev) => ({ ...prev, [e.target.name]: "" })); // clear error on change
+  };
+
+  // Validate fields for each step
+  const validateStep = () => {
+    const errors: { [key: string]: string } = {};
+    if (step === 1) {
+      if (!form.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
+      if (!form.password) errors.password = "กรุณากรอกรหัสผ่าน";
+      if (!form.email) errors.email = "กรุณากรอกอีเมล";
+      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) errors.email = "รูปแบบอีเมลไม่ถูกต้อง";
+    }
+    if (step === 2) {
+      if (!form.fullName) errors.fullName = "กรุณากรอกชื่อ-นามสกุล";
+      if (!form.phoneNumber) errors.phoneNumber = "กรุณากรอกเบอร์โทรศัพท์";
+      if (!form.province) errors.province = "กรุณาเลือกจังหวัด";
+      if (!form.district) errors.district = "กรุณาเลือกอำเภอ/เขต";
+      if (!form.subdistrict) errors.subdistrict = "กรุณาเลือกตำบล/แขวง";
+    }
+    if (step === 3) {
+      if (!form.hospital) errors.hospital = "กรุณาเลือกโรงพยาบาล";
+    }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateStep()) return;
     setLoading(true);
     setError("");
     setSuccess("");
@@ -141,6 +226,12 @@ export default function RegisterForm() {
     setLoading(false);
   };
 
+  // Step navigation with validation
+  const handleNextStep = () => {
+    if (validateStep()) setStep(step + 1);
+  };
+  const handlePrevStep = () => setStep(step - 1);
+
   return (
     <ComponentCard title="สมัครสมาชิก" className="max-w-xl mx-auto mt-6">
       {/* Stepper Navigation */}
@@ -172,15 +263,15 @@ export default function RegisterForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>ชื่อผู้ใช้ (username)</Label>
-              <Input name="username" value={form.username} onChange={handleChange} required />
+              <Input name="username" value={form.username} onChange={handleChange} required error={!!fieldErrors.username} hint={fieldErrors.username} />
             </div>
             <div>
               <Label>รหัสผ่าน</Label>
-              <Input name="password" type="password" value={form.password} onChange={handleChange} required />
+              <Input name="password" type="password" value={form.password} onChange={handleChange} required error={!!fieldErrors.password} hint={fieldErrors.password} />
             </div>
             <div className="md:col-span-2">
               <Label>อีเมล</Label>
-              <Input name="email" type="email" value={form.email} onChange={handleChange} required />
+              <Input name="email" type="email" value={form.email} onChange={handleChange} required error={!!fieldErrors.email} hint={fieldErrors.email} />
             </div>
           </div>
         )}
@@ -189,16 +280,20 @@ export default function RegisterForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <Label>ชื่อ-นามสกุล</Label>
-              <Input name="fullName" value={form.fullName} onChange={handleChange} required />
+              <Input name="fullName" value={form.fullName} onChange={handleChange} required error={!!fieldErrors.fullName} hint={fieldErrors.fullName} />
             </div>
             <div className="md:col-span-2">
               <Label>เบอร์โทรศัพท์</Label>
               <PhoneInput
                 countries={countries}
                 placeholder="เช่น 0812345678"
-                onChange={value => setForm({ ...form, phoneNumber: value })}
+                onChange={value => {
+                  setForm({ ...form, phoneNumber: value });
+                  setFieldErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                }}
                 selectPosition="start"
               />
+              {fieldErrors.phoneNumber && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.phoneNumber}</p>}
             </div>
             <div className="md:col-span-2">
               <Label>ที่อยู่</Label>
@@ -206,30 +301,49 @@ export default function RegisterForm() {
             </div>
             <div>
               <Label>จังหวัด</Label>
-              <Select
-                options={provinces.map((p) => ({ value: p.name, label: p.name }))}
+              <Select2
+                options={provinces.map((p) => ({ value: p.name, label: p.name, id: p.id }))}
                 placeholder="เลือกจังหวัด"
-                onChange={value => setForm({ ...form, province: value })}
+                onChange={value => {
+                  const selected = provinces.find(p => p.name === value);
+                  setForm({ ...form, province: value });
+                  setProvinceId(selected ? selected.id : null);
+                  setFieldErrors((prev) => ({ ...prev, province: "" }));
+                }}
                 defaultValue={form.province}
+                error={!!fieldErrors.province}
               />
+              {fieldErrors.province && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.province}</p>}
             </div>
             <div>
               <Label>อำเภอ/เขต</Label>
-              <Select
-                options={amphurs.map((a) => ({ value: a.name, label: a.name }))}
+              <Select2
+                options={amphurs.map((a) => ({ value: a.name, label: a.name, id: a.id }))}
                 placeholder="เลือกอำเภอ/เขต"
-                onChange={value => setForm({ ...form, district: value })}
+                onChange={value => {
+                  const selected = amphurs.find(a => a.name === value);
+                  setForm({ ...form, district: value });
+                  setAmphurId(selected ? selected.id : null);
+                  setFieldErrors((prev) => ({ ...prev, district: "" }));
+                }}
                 defaultValue={form.district}
+                error={!!fieldErrors.district}
               />
+              {fieldErrors.district && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.district}</p>}
             </div>
             <div>
               <Label>ตำบล/แขวง</Label>
-              <Select
-                options={subdistricts.map((s) => ({ value: s.name, label: s.name }))}
+              <Select2
+                options={subdistricts.map((s) => ({ value: s.name, label: s.name, id: s.id }))}
                 placeholder="เลือกตำบล/แขวง"
-                onChange={value => setForm({ ...form, subdistrict: value })}
+                onChange={value => {
+                  setForm({ ...form, subdistrict: value });
+                  setFieldErrors((prev) => ({ ...prev, subdistrict: "" }));
+                }}
                 defaultValue={form.subdistrict}
+                error={!!fieldErrors.subdistrict}
               />
+              {fieldErrors.subdistrict && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.subdistrict}</p>}
             </div>
           </div>
         )}
@@ -238,12 +352,17 @@ export default function RegisterForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <Label>โรงพยาบาล</Label>
-              <Select
+              <Select2
                 options={hospitals.map((h) => ({ value: h.name, label: h.name }))}
                 placeholder="เลือกโรงพยาบาล"
-                onChange={value => setForm({ ...form, hospital: value })}
+                onChange={value => {
+                  setForm({ ...form, hospital: value });
+                  setFieldErrors((prev) => ({ ...prev, hospital: "" }));
+                }}
                 defaultValue={form.hospital}
+                error={!!fieldErrors.hospital}
               />
+              {fieldErrors.hospital && <p className="mt-1.5 text-xs text-error-500">{fieldErrors.hospital}</p>}
             </div>
             <div>
               <Label>สถานที่ทำงาน</Label>
@@ -258,12 +377,12 @@ export default function RegisterForm() {
         {/* Stepper Navigation Buttons */}
         <div className="flex justify-between gap-2 pt-2">
           {step > 1 && (
-            <Button type="button" size="sm" className="w-32" onClick={() => setStep(step - 1)}>
+            <Button type="button" size="sm" className="w-32" onClick={handlePrevStep}>
               ย้อนกลับ
             </Button>
           )}
           {step < 3 && (
-            <Button type="button" size="sm" className="w-32 ml-auto" onClick={() => setStep(step + 1)}>
+            <Button type="button" size="sm" className="w-32 ml-auto" onClick={handleNextStep}>
               ถัดไป
             </Button>
           )}
