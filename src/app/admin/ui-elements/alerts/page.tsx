@@ -38,3 +38,9 @@ export default function Alerts() {
             title="Warning Message"
             message="Be cautious when performing this action."
             showLink={true}
+          />
+        </ComponentCard>
+      </div>
+    </div>
+  );
+}
