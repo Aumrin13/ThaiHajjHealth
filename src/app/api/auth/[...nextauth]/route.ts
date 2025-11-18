@@ -1,0 +1,85 @@
+import NextAuth, { NextAuthOptions, User, Session, JWT } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+
+// ใช้ URL API จาก environment variable (API_BASE_URL)
+const API_URL = process.env.API_BASE_URL;
+
+interface LoginResponse {
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    fullName: string;
+    role: "ADMIN" | "STAFF" | "EXECUTIVE" | "DOCTOR";
+    hospital?: string;
+    phoneNumber?: string;
+    address?: string;
+    subdistrict?: string;
+    district?: string;
+    province?: string;
+    workplace?: string;
+    position?: string;
+    status?: string;
+    lastLogin?: string;
+    refreshToken?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const authOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username or Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials: Record<"username" | "password", string> | undefined): Promise<User | null> {
+        if (!credentials?.username || !credentials?.password) return null;
+        const res = await fetch(`${API_URL}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: credentials.username,
+            password: credentials.password,
+          }),
+        });
+        const data: LoginResponse = await res.json();
+        if (res.ok && data.accessToken) {
+          return {
+            ...data.user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          } as User;
+        }
+        return null;
+      },
+    }),
+  ],
+  session: { strategy: "jwt" as const },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT; user?: User }) {
+      if (user) {
+        token.accessToken = (user as any).accessToken;
+        token.refreshToken = (user as any).refreshToken;
+        token.role = (user as any).role;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      session.user = {
+        ...session.user,
+        role: token.role,
+        accessToken: token.accessToken,
+        refreshToken: token.refreshToken,
+      };
+      return session;
+    },
+  },
+};
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
