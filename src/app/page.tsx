@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation';
 // import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export default async function HomePage() {
@@ -6,31 +5,6 @@ export default async function HomePage() {
   // const session = await getServerSession(authOptions);
   // TODO: Replace with correct usage or move logic to API route if needed.
 
-  if (!session) {
-    // ถ้าไม่ได้ login ให้ redirect ไปหน้า login
-    redirect('/login');
-    return null;
-  }
-
-  // ตรวจสอบ role แล้ว redirect ตามสิทธิ์
-  const role = session.user?.role;
-  if (role === 'ADMIN') {
-    redirect('/admin');
-    return null;
-  }
-  if (role === 'STAFF') {
-    redirect('/staff');
-    return null;
-  }
-  if (role === 'EXECUTIVE') {
-    redirect('/executive');
-    return null;
-  }
-  if (role === 'DOCTOR') {
-    redirect('/doctor');
-    return null;
-  }
-
-  // ถ้าไม่มี role ตรงกับที่กำหนด
-  return <div>ไม่พบสิทธิ์ผู้ใช้งาน</div>;
+  // TODO: Implement session logic or remove this placeholder.
+  return <div>Home Page</div>;
 }
