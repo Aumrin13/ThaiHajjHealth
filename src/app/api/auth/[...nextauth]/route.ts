@@ -1,4 +1,5 @@
-import NextAuth, { User, Session, JWT } from "next-auth";
+import NextAuth, { User, Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // ใช้ URL API จาก environment variable (API_BASE_URL)

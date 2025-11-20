@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+// import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export default async function HomePage() {
   // ใช้ next-auth ตรวจสอบ session ฝั่ง server
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
+  // TODO: Replace with correct usage or move logic to API route if needed.
 
   if (!session) {
     // ถ้าไม่ได้ login ให้ redirect ไปหน้า login
