@@ -63,9 +63,9 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
-        token.accessToken = (user as any).accessToken;
-        token.refreshToken = (user as any).refreshToken;
-        token.role = (user as any).role;
+        token.accessToken = (user as User & { accessToken?: string }).accessToken;
+        token.refreshToken = (user as User & { refreshToken?: string }).refreshToken;
+        token.role = (user as User & { role?: string }).role;
       }
       return token;
     },
