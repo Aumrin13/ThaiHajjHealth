@@ -81,9 +81,9 @@ const authOptions = {
     async session({ session, token }: { session: Session; token: JWT }) {
       session.user = {
         ...session.user,
-        role: token.role as string | undefined,
-        accessToken: token.accessToken as string | undefined,
-        refreshToken: token.refreshToken as string | undefined,
+        role: typeof token.role === 'string' ? token.role : undefined,
+        accessToken: typeof token.accessToken === 'string' ? token.accessToken : undefined,
+        refreshToken: typeof token.refreshToken === 'string' ? token.refreshToken : undefined,
       };
       return session;
     },
