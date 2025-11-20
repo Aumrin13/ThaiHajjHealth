@@ -29,7 +29,7 @@ interface LoginResponse {
   refreshToken: string;
 }
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
